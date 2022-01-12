@@ -45,23 +45,9 @@ module.exports = {
                     */
                     // 1、使用loader的默认配置
                     // 'postcss-loader',
-                    // 2、改loader的配置
+                    // 2、改loader的配置 加postcss.config.js 文件
                     {
                         loader: "postcss-loader",
-                        options: {
-                            // ident: 'postcss',
-                            // plugins: () => [
-                            //     // postcss的插件
-                            //     require('postcss-preset-env')
-                            // ]
-                            getPostcssOptions: {
-                                ident: 'postcss',
-                                plugins: () => [
-                                    // postcss的插件
-                                    require('postcss-preset-env')()
-                                ]
-                            }
-                        }
                     }
 
                 ]
@@ -74,7 +60,9 @@ module.exports = {
         }),
         new MiniCssExtractPlugin({
             // 对输出文件进行重命名
-            filename: 'css/built.css'
+            filename: 'css/built.css',
+            // chunkFilename 指未被列在 entry 中，却又需要被打包出来的 chunk 文件的名称。一般来说，这个 chunk 文件指的就是要懒加载的代码。
+            chunkFilename: 'css/built.css'
         })
     ],
     mode: "development"
