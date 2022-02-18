@@ -13,6 +13,11 @@ module.exports = {
   module: {
     rules: [
       /*
+        window11 调试ie
+        edge 设置默认浏览器
+        1 开启 允许在 Internet Explorer 模式下重新加载网站
+        2 Internet Explorer 模式页面 添加所要测试的网页
+        3 win + r 输入 %systemroot%\system32\f12\IEChooser.exe 打开控制台
           js兼容处理：babel-loader @babel/core @babel/preset-env
             1.基本js兼容性处理 --> @babel/preset-env
               问题：只能转换基本语法，如promise高级语法不能转换
