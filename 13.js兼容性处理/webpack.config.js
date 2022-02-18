@@ -6,6 +6,9 @@ module.exports = {
   output: {
     filename: 'js/built.js',
     path: resolve(__dirname, 'build'),
+    environment: {
+      arrowFunction: false,
+    },
   },
   module: {
     rules: [
@@ -14,6 +17,11 @@ module.exports = {
             1.基本js兼容性处理 --> @babel/preset-env
               问题：只能转换基本语法，如promise高级语法不能转换
             2.全部js兼容性处理 --> @babel/poltfill
+              遇到的问题: js文件引入import '@babel/polyfill';打包文件默认输出形式是箭头函数
+              解决办法: 需要把箭头函数关闭掉
+                  environment: {
+                    arrowFunction: false,
+                  },
               问题：需求只要解决部分兼容性问题，但是将所有兼容性代码全部引入，体积太大了~
             3.按需加载 --> core-js
         */
@@ -24,16 +32,21 @@ module.exports = {
         loader: 'babel-loader',
         // 预设：指示bable做怎么样的兼容性处理
         options: {
-          presets: [['@babel/preset-env', {
-            targets: {
-              edge: '17',
-              firefox: '60',
-              chrome: '67',
-              safari: '11.1',
-              ie: '11',
-            },
-            useBuiltIns: 'usage',
-          }]],
+          presets: [
+            [
+              '@babel/preset-env',
+              {
+                targets: {
+                  edge: '17',
+                  firefox: '60',
+                  chrome: '67',
+                  safari: '11.1',
+                  ie: '11',
+                },
+                useBuiltIns: 'usage',
+              },
+            ],
+          ],
         },
       },
     ],
@@ -43,5 +56,6 @@ module.exports = {
       template: './src/index.html',
     }),
   ],
-  mode: 'development',
+  // mode: 'development',
+  mode: 'production',
 };
