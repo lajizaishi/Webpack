@@ -17,9 +17,7 @@ const commonCssLoader = [
     loader: 'postcss-loader',
     options: {
       ident: 'postcss',
-      plugins: () => {
-        resolve('postcss-preset-env')();
-      },
+      plugins: () => [require('postcss-preset-env')()],
     },
   },
 ];
@@ -29,9 +27,6 @@ module.exports = {
   output: {
     filename: 'js/buult.js',
     path: resolve(__dirname, 'build'),
-    environment: {
-      arrowFunction: false,
-    },
   },
   module: {
     rules: [
@@ -43,7 +38,7 @@ module.exports = {
       {
         // less兼容性处理
         test: /\.less$/,
-        ues: [...commonCssLoader, 'less-loader'],
+        use: [...commonCssLoader, 'less-loader'],
       },
       /*
         * 正常来讲，一个文件只能被一个loader处理。
@@ -73,15 +68,20 @@ module.exports = {
         loader: 'babel-loader',
         options: {
           presets: [
-            '@babel/preset-env', // 只能做基本兼容
-            {
-              useBuiltIns: 'usage',
-              corejs: { version: 3 },
-              targets: {
-                chrome: '60',
-                firefox: '50',
+            [
+              '@babel/preset-env',// 只能做基本兼容
+              {
+                useBuiltIns: 'usage',
+                corejs: { version: 3 },
+                targets: {
+                  edge: '17',
+                  firefox: '60',
+                  chrome: '67',
+                  safari: '11.1',
+                  ie: '9',
+                },
               },
-            },
+            ],
           ],
         },
       },
