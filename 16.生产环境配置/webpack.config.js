@@ -58,11 +58,6 @@ module.exports = {
       },
       {
         // js兼容性处理
-        // 遇到的问题: js文件引入import '@babel/polyfill';打包文件默认输出形式是箭头函数
-        // 解决办法: 需要把箭头函数关闭掉
-        // environment: {
-        //   arrowFunction: false,
-        // },
         test: /\.js$/,
         exclude: /node_modules/,
         loader: 'babel-loader',
