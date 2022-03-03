@@ -64,7 +64,7 @@ module.exports = {
         options: {
           presets: [
             [
-              '@babel/preset-env',// 只能做基本兼容
+              '@babel/preset-env', // 只能做基本兼容
               {
                 useBuiltIns: 'usage',
                 corejs: { version: 3 },
