@@ -14,12 +14,13 @@ const commonCssLoader = [
   {
     // css兼容性处理
     // 还需要在package.json中定义browserslist
+    // !!!版本不兼容 在项目目录添加 postcss-config.js文件
     loader: 'postcss-loader',
-    options: {
-      ident: 'postcss',
-      // eslint-disable-next-line global-require
-      plugins: () => [require('postcss-preset-env')()],
-    },
+    // options: {
+    //   ident: 'postcss',
+    //   // eslint-disable-next-line global-require
+    //   plugins: () => [require('postcss-preset-env')()],
+    // },
   },
 ];
 

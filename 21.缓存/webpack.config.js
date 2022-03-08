@@ -3,6 +3,18 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCssAssetsWebpackPlugin = require('optimize-css-assets-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
+/*
+*   缓存：
+*     babel缓存
+*       cacheDirectory: true
+*     文件缓存
+*       hash：每次webpack构建时会生成一个唯一的hash值
+*         问题：因为js和css同时使用一个hash值。如果重新打包，会导致所有缓存失效。（可能我却只改动一个文件）
+*       chunkhash: 根据chunk生成的hash值。如果打包来源于同一个chunk，那么hash值就一样
+*         问题： js和css的hash值还是一样的 因为css是在js中被引入的，所以同属于一个chunk
+*       contenthash: 根据文件的内容生成hash值，不同文件hash值一定不一样
+* */
+
 // 定义nodejs环境变量：决定使用browserslist的哪个环境
 process.env.NODE_ENV = 'production';
 
@@ -14,19 +26,20 @@ const commonCssLoader = [
   {
     // css兼容性处理
     // 还需要在package.json中定义browserslist
+    // !!!!!!!!!!版本不兼容 在项目目录添加 postcss-config.js文件
     loader: 'postcss-loader',
-    options: {
-      ident: 'postcss',
-      // eslint-disable-next-line global-require
-      plugins: () => [require('postcss-preset-env')()],
-    },
+    // options: {
+    //   ident: 'postcss',
+    //   // eslint-disable-next-line global-require
+    //   plugins: () => [require('postcss-preset-env')()],
+    // },
   },
 ];
 
 module.exports = {
   entry: './src/js/index.js',
   output: {
-    filename: 'js/buult.js',
+    filename: 'js/buult[contenthash:10].js',
     path: resolve(__dirname, 'build'),
   },
   module: {
@@ -120,7 +133,7 @@ module.exports = {
   },
   plugins: [
     new MiniCssExtractPlugin({
-      filename: 'css/built.css',
+      filename: 'css/built[contenthash:10].css',
     }),
     // 压缩css
     new OptimizeCssAssetsWebpackPlugin(),
