@@ -19,11 +19,11 @@ const commonCssLoader = [
   {
     // 还需要在package.json中定义browserslist
     loader: 'postcss-loader',
-    options: {
-      ident: 'postcss',
-      // eslint-disable-next-line global-require
-      plugins: () => [require('postcss-preset-env')()],
-    },
+    // options: {
+    //   ident: 'postcss',
+    //   // eslint-disable-next-line global-require
+    //   plugins: () => [require('postcss-preset-env')()],
+    // },
   },
 ];
 
@@ -127,7 +127,7 @@ module.exports = {
       /*
       *  1.帮助serviceworker快速启动
       *  2.删除旧的 serviceworker
-      * 生成一个serviceworker 配置文件~
+      *   生成一个serviceworker 配置文件~
       * */
       clientsClaim: true,
       skipWaiting: true,
