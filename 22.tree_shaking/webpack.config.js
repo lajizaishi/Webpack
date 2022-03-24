@@ -8,7 +8,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
     前提：1. 必须使用ES6模块化  2. 开启production环境
     作用: 减少代码体积
 
-    在package.json中配置 
+    在package.json中配置
       "sideEffects": false 所有代码都没有副作用（都可以进行tree shaking）
         问题：可能会把css / @babel/polyfill （副作用）文件干掉
       "sideEffects": ["*.css", "*.less"]
@@ -23,19 +23,32 @@ const commonCssLoader = [
   'css-loader',
   {
     // 还需要在package.json中定义browserslist
+    // eslint-disable-next-line max-len
+    // !!!报错Invalid options object. PostCSS Loader has been initialized using an options object that does not m
+    // 原因是postcss-loader这个版本不支持在webpack。config。js文件中这么写
+    // 解决办法：
+    // 在项目根目录下新建一个postcss-config.js文件写下如下代码
+    // module.exports = {
+    //   plugins: [
+    //     // postcss的插件
+    //     // eslint-disable-next-line global-require
+    //     require('postcss-preset-env')(),
+    //   ],
+    // };
+
     loader: 'postcss-loader',
-    options: {
-      ident: 'postcss',
-      plugins: () => [require('postcss-preset-env')()]
-    }
-  }
+    // options: {
+    //   ident: 'postcss',
+    //   plugins: () => [require('postcss-preset-env')()],
+    // },
+  },
 ];
 
 module.exports = {
   entry: './src/js/index.js',
   output: {
     filename: 'js/built.[contenthash:10].js',
-    path: resolve(__dirname, 'build')
+    path: resolve(__dirname, 'build'),
   },
   module: {
     rules: [
@@ -47,8 +60,8 @@ module.exports = {
         enforce: 'pre',
         loader: 'eslint-loader',
         options: {
-          fix: true
-        }
+          fix: true,
+        },
       },
       {
         // 以下loader只会匹配一个
@@ -56,11 +69,11 @@ module.exports = {
         oneOf: [
           {
             test: /\.css$/,
-            use: [...commonCssLoader]
+            use: [...commonCssLoader],
           },
           {
             test: /\.less$/,
-            use: [...commonCssLoader, 'less-loader']
+            use: [...commonCssLoader, 'less-loader'],
           },
           /*
             正常来讲，一个文件只能被一个loader处理。
@@ -80,15 +93,15 @@ module.exports = {
                     corejs: { version: 3 },
                     targets: {
                       chrome: '60',
-                      firefox: '50'
-                    }
-                  }
-                ]
+                      firefox: '50',
+                    },
+                  },
+                ],
               ],
               // 开启babel缓存
               // 第二次构建时，会读取之前的缓存
-              cacheDirectory: true
-            }
+              cacheDirectory: true,
+            },
           },
           {
             test: /\.(jpg|png|gif)/,
@@ -97,37 +110,37 @@ module.exports = {
               limit: 8 * 1024,
               name: '[hash:10].[ext]',
               outputPath: 'imgs',
-              esModule: false
-            }
+              esModule: false,
+            },
           },
           {
             test: /\.html$/,
-            loader: 'html-loader'
+            loader: 'html-loader',
           },
           {
             exclude: /\.(js|css|less|html|jpg|png|gif)/,
             loader: 'file-loader',
             options: {
-              outputPath: 'media'
-            }
-          }
-        ]
-      }
-    ]
+              outputPath: 'media',
+            },
+          },
+        ],
+      },
+    ],
   },
   plugins: [
     new MiniCssExtractPlugin({
-      filename: 'css/built.[contenthash:10].css'
+      filename: 'css/built.[contenthash:10].css',
     }),
     new OptimizeCssAssetsWebpackPlugin(),
     new HtmlWebpackPlugin({
       template: './src/index.html',
       minify: {
         collapseWhitespace: true,
-        removeComments: true
-      }
-    })
+        removeComments: true,
+      },
+    }),
   ],
   mode: 'production',
-  devtool: 'source-map'
+  devtool: 'source-map',
 };
