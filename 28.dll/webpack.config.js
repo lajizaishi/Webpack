@@ -25,8 +25,9 @@ module.exports = {
     }),
     // 将某个文件打包输出出去，并在html中自动引入该资源
     new AddAssetHtmlWebpackPlugin({
-      // filepath: resolve(__dirname, 'dll/jquery.js'),
-      filepath: require.resolve(path.resolve(__dirname, 'dll/jquery.js')),
+      filepath: resolve(__dirname, 'dll/jquery.js'),
+      // script标签多了一个目录auto
+      publicPath: './',
     }),
   ],
 
